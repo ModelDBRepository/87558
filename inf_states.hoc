@@ -1,0 +1,70 @@
+// inf_states.hoc
+// graphs the states infinity values
+
+objref v_vec
+v_vec=new Vector((40-(-120))/.25)
+
+v_vec.indgen(-120,40,0.25)
+s = v_vec.size()
+
+objref m_hh_vec, m_nap_vec, m_nattxs_vec, m_nav1p8_vec
+objref m_nav1p9_vec, n_kf_vec, n_ks_vec
+objref h_nap_vec, h_nattxs_vec, h_nav1p8_vec
+objref h_nav1p9_vec
+
+// m_hh_vec=new Vector(s)
+m_nap_vec=new Vector(s)
+m_nattxs_vec=new Vector(s)
+m_nav1p8_vec=new Vector(s)
+m_nav1p9_vec=new Vector(s)
+n_kf_vec=new Vector(s)
+n_ks_vec=new Vector(s)
+h_nap_vec=new Vector(s)
+h_nattxs_vec=new Vector(s)
+h_nav1p8_vec=new Vector(s)
+h_nav1p9_vec=new Vector(s)
+
+for i=0,v_vec.size()-1 {
+	v_init=v_vec.x[i]
+	init()
+//	m_hh_vec.x[i]=soma.m_hh( 0.5 )
+	m_nap_vec.x[i]=soma.m_nap( 0.5 )
+	m_nattxs_vec.x[i]=soma.m_nattxs( 0.5 )
+	m_nav1p8_vec.x[i]=soma.m_nav1p8( 0.5 )
+	m_nav1p9_vec.x[i]=soma.m_nav1p9( 0.5 )
+	h_nap_vec.x[i]=soma.h_nap( 0.5 )
+	h_nattxs_vec.x[i]=soma.h_nattxs( 0.5 )
+	h_nav1p8_vec.x[i]=soma.h_nav1p8( 0.5 )
+	h_nav1p9_vec.x[i]=soma.h_nav1p9( 0.5 )
+
+	n_kf_vec.x[i]=soma.n_kf( 0.5 )
+	n_ks_vec.x[i]=soma.n_ks( 0.5 )
+}
+
+
+objref g
+g=new Graph()
+
+// m_hh_vec.label("")
+m_nap_vec.label("m_nap")
+m_nattxs_vec.label("m_nattxs")
+m_nav1p8_vec.label("m_nav1p8")
+m_nav1p9_vec.label("m_nav1p9")
+n_kf_vec.label("n_kf")
+n_ks_vec.label("n_ks")
+h_nap_vec.label("h_nap")
+h_nattxs_vec.label("h_nattxs")
+h_nav1p8_vec.label("h_nav1p8")
+h_nav1p9_vec.label("h_nav1p9")
+
+m_nap_vec.line(g,v_vec)
+m_nattxs_vec.line(g,v_vec)
+m_nav1p8_vec.line(g,v_vec)
+m_nav1p9_vec.line(g,v_vec)
+n_kf_vec.line(g,v_vec)
+n_ks_vec.line(g,v_vec)
+h_nap_vec.line(g,v_vec)
+h_nattxs_vec.line(g,v_vec)
+h_nav1p8_vec.line(g,v_vec)
+h_nav1p9_vec.line(g,v_vec)
+g.exec_menu("View = plot")

@@ -1,0 +1,71 @@
+// fig8.hoc
+// recreate fig 8 from Baker '05
+// Tom Morse 3/5/07
+
+objref volt_vec, time_vec, current_vec, inav1p8_vec, ikf_vec
+
+{volt_vec = new Vector()}
+{time_vec = new Vector()}
+{current_vec = new Vector()}
+{inav1p8_vec = new Vector()}
+{ikf_vec = new Vector()}
+
+volt_vec.record(&soma.v(0.5))
+time_vec.record(&t)
+
+inav1p8_vec.record(&soma.i_nav1p8(0.5))
+ikf_vec.record(&soma.i_kf(0.5))
+
+objref sec
+soma sec=new SEClamp(0.5) // Single Electrode Clamp used for Voltage Clamp
+
+// figure 8A
+
+// reduce K currents to 1/10th size to mimic effect of blockers
+gbar_ks *= 0.1
+gbar_kf *= 0.1
+
+// adjust sodium reversal potential to reflect 1/3rd gradient (personal comm. Baker)
+ena_nav1p8 = 37
+
+sec.rs=1e-3 // MOhm small resistance causes cell to faithfully follow volt command
+
+sec.amp1=-110
+sec.dur1=5
+
+sec.amp2=-50
+sec.dur2=45
+
+sec.amp3=-110
+sec.dur3=5
+
+tstop=sec.dur1 + sec.dur2 + sec.dur3  // run for at least as long as SEClamp
+
+objref fig8A_top, fig8A_bottom
+fig8A_top = new Graph()
+fig8A_bottom = new Graph()
+
+volt_graph.exec_menu("Erase")
+volt_graph.exec_menu("Keep Lines")
+
+v_init=-110 // when init() is called the membrane v is set to v_init
+cntr=1
+proc fig8() {
+	for (level=-50; level<=70; level += 10) {
+	
+		init()
+		sec.amp2=level
+		run()
+	
+		inav1p8_vec.line(fig8A_top, time_vec)
+		current_vec = inav1p8_vec.add(ikf_vec)
+		current_vec.line(fig8A_bottom, time_vec)
+	print cntr
+	cntr += 1
+	}
+	fig8A_top.exec_menu("View = plot")
+	fig8A_bottom.exec_menu("View = plot")
+}
+
+fig8()
+volt_graph.exec_menu("View = plot")

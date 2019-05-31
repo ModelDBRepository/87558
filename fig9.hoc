@@ -1,0 +1,34 @@
+// fig9.hoc
+
+v_init=-70
+
+objref hbox
+hbox = new HBox()
+hbox.intercept(1)
+
+volt_graph.view(0, -90, 100, 150, 582, 100, 300, 200)
+
+xpanel("IClamps")
+xlabel("Delay to start of current clamp #1:")
+xvalue("IClamp[0].del")
+xlabel("Duration of current clamp pulse:")
+xvalue("IClamp[0].dur")
+xlabel("Amplitude of current clamp pulse:")
+xvalue("IClamp[0].amp")
+xpanel()
+
+xpanel("IClamps2")
+xlabel("Delay to start of current clamp #2:")
+xvalue("IClamp[1].del")
+xlabel("Duration of current clamp pulse:")
+xvalue("IClamp[1].dur")
+xlabel("Amplitude of current clamp pulse:")
+xvalue("IClamp[1].amp")
+xpanel()
+
+xpanel("odds and ends")
+xbutton("Init & Run","{init() run()}")
+xpanel()
+
+hbox.intercept(0)
+hbox.map()

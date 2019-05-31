@@ -1,0 +1,68 @@
+// fig9.hoc
+
+// start simulation soma at -90 mV
+
+v_init=-90
+init()
+
+////////////////////////////
+//
+// fig 9 A left:
+//
+////////////////////////////
+
+objref fig9aleft, fig9aright
+fig9aleft = new Graph()
+
+objref anotherIClamp
+soma anotherIClamp = new IClamp(0.5)
+
+anotherIClamp.del=20
+anotherIClamp.dur=10
+anotherIClamp.amp=0.400 // in units of nA
+tstop=100
+
+IClamp[0].del=0
+IClamp[0].dur=1000 // forever, keeps cell clamped at -90 if nothing else present
+IClamp[0].amp= -0.45
+
+objref v_vec, t_vec
+v_vec = new Vector()
+t_vec = new Vector()
+
+v_vec.record(&soma.v(0.5))
+t_vec.record(&t)
+
+gbar_nav1p9=0
+run()
+
+strdef fig9alabel
+
+// in the below the 1e-8 converts from um2 to cm2 and 1e9 converts from S to nS
+sprint(fig9alabel,"Fig 9A left G_Na9 = %f", L*PI*diam*gbar_nav1p9*1e-8*1e9) 
+v_vec.line(fig9aleft,t_vec,1,0)
+fig9aleft.label(0.5,.9,fig9alabel)
+fig9aleft.exec_menu("View = plot")
+
+
+
+////////////////////////////
+//
+// fig 9 A right:
+//
+////////////////////////////
+
+
+gbar_nav1p9=0.00667 // S/cm2 // corresponds to 100 nS/15 pF cell
+anotherIClamp.amp=0.069 // in units of nA
+
+run()
+
+fig9aright=new Graph()
+strdef fig9arightlabel
+
+// in the below the 1e-8 converts from um2 to cm2 and 1e9 converts from S to nS
+sprint(fig9arightlabel,"Fig 9A right G_Na9 = %f", L*PI*diam*gbar_nav1p9*1e-8*1e9) 
+v_vec.line(fig9aright,t_vec,1,0)
+fig9aright.label(0.5,.9,fig9arightlabel)
+fig9aright.exec_menu("View = plot")
